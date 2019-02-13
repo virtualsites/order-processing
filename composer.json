@@ -12,9 +12,21 @@
     "php": "^7.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.0"
+    "phpunit/phpunit": "^8.0",
+    "phpstan/phpstan": "^0.11.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Domain\\": "src/Domain"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Domain\\": "tests/Domain"
+    }
   },
   "scripts": {
-    "phpunit": "./vendor/bin/phpunit"
+    "phpunit": "phpunit tests",
+    "phpstan": "vendor/bin/phpstan analyse -l 7 src tests"
   }
 }
