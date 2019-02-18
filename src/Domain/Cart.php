@@ -57,16 +57,19 @@ class Cart
         $this->initTotal();
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function addItem(ItemInterface $item) : void
     {
+        if (false === $item->isAvailable()) {
+            throw new \RuntimeException('Products are not available in store with provided quantity');
+        }
+
         $this->items->add(
-            $item = new Item(
-                $item->getName(),
-                $item->getPrice(),
-                $this->customer->getVatPrice($item->getPrice())
-            )
+            $cartItem = $item->withVat($this->customer->getVatPrice($item->getPrice()))
         );
-        $this->total->add($item->getTotalPrice());
+        $this->total->add($cartItem->getTotalPrice());
     }
 
     public function getTotal() : float

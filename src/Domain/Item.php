@@ -9,12 +9,21 @@ class Item implements ItemInterface
 {
     private $name;
     private $price;
+    private $quantity;
+    private $availableQuantity;
     private $vat;
 
-    public function __construct(string $name, float $price, float $vat = 0.00)
-    {
+    public function __construct(
+        string $name,
+        float $price,
+        int $quantity,
+        int $availableQuantity,
+        float $vat = 0.00
+    ) {
         $this->name = $name;
         $this->price = $price;
+        $this->quantity = $quantity;
+        $this->availableQuantity = $availableQuantity;
         $this->vat = $vat;
     }
 
@@ -23,13 +32,21 @@ class Item implements ItemInterface
         return round($this->price + $this->vat, 2);
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
     public function getPrice(): float
     {
         return $this->price;
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->quantity <= $this->availableQuantity;
+    }
+
+    public function withVat(float $vat): Item
+    {
+        $clone = clone $this;
+        $clone->vat = $vat;
+
+        return $clone;
     }
 }

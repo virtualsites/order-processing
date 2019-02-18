@@ -13,8 +13,8 @@ class CartTest extends TestCase
         // arrange
         $cart = Cart::forPolishCustomer();
         // act
-        $cart->addItem($item1 = new Item('okulary', 50.59));
-        $cart->addItem($item2 = new Item('bluzka', 120.75));
+        $cart->addItem($item1 = new Item('okulary', 50.59, 1, 1));
+        $cart->addItem($item2 = new Item('bluzka', 120.75, 1, 1));
         $total = $item1->getTotalPrice() + $item2->getTotalPrice();
         // assert
         self::assertInstanceOf(Order::class, $cart->createOrder());
@@ -29,13 +29,24 @@ class CartTest extends TestCase
         // arrange
         $cart = Cart::forUECitizen();
         // act
-        $cart->addItem($item1 = new Item('hat', 150.59));
-        $cart->addItem($item2 = new Item('t-shirt', 20.79));
+        $cart->addItem($item1 = new Item('hat', 150.59, 1, 1));
+        $cart->addItem($item2 = new Item('t-shirt', 20.79, 1, 1));
         // assert
         self::assertInstanceOf(Order::class, $cart->createOrder());
         self::assertSame(
             $item1->getTotalPrice() + $item2->getTotalPrice(),
             $cart->getTotal()
         );
+    }
+
+    public function testProductIsNotAvailableInStoreWithProvidedQuantity(): void
+    {
+        // arrange
+        $cart = Cart::forUECitizen();
+        // assert
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Products are not available in store with provided quantity');
+        // act
+        $cart->addItem($item1 = new Item('hat', 150.59, 3, 2));
     }
 }
