@@ -5,5 +5,5 @@ namespace Domain\Customer;
 
 interface CustomerInterface
 {
-    public function getVat(): int;
+    public function getVatPrice(float $price): float;
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Domain;
 
+use Domain\Customer\Tax\Vat;
 use PHPUnit\Framework\TestCase;
 
 class CartTest extends TestCase
@@ -10,11 +11,16 @@ class CartTest extends TestCase
     public function testProductBoughtByPolish(): void
     {
         // arrange
-        $cart = Cart::empty();
+        $cart = Cart::forPolishCustomer();
         // act
-        $cart->addItem(new Item('okulary', 50.59));
-        $cart->addItem(new Item('bluzka', 120.75));
+        $cart->addItem($item1 = new Item('okulary', 50.59));
+        $cart->addItem($item2 = new Item('bluzka', 120.75));
+        $total = $item1->getPrice() + $item2->getPrice();
         // assert
         self::assertInstanceOf(Order::class, $cart->createOrder());
+        self::assertSame(
+            $total + (new Vat())->countVat($total),
+            $cart->getTotal()
+        );
     }
 }
