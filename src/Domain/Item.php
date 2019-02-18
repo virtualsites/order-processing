@@ -18,6 +18,6 @@ class Item implements ItemInterface
 
     public function getPrice(): float
     {
-        return $this->price;
+        return round($this->price, 2);
     }
 }
