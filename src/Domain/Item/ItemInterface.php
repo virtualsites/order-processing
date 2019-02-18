@@ -5,5 +5,7 @@ namespace Domain\Item;
 
 interface ItemInterface
 {
+    public function getTotalPrice(): float;
+    public function getName(): string;
     public function getPrice(): float;
 }

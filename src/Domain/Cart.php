@@ -59,8 +59,14 @@ class Cart
 
     public function addItem(ItemInterface $item) : void
     {
-        $this->items->add($item);
-        $this->total->add($this->priceWithTax($item));
+        $this->items->add(
+            $item = new Item(
+                $item->getName(),
+                $item->getPrice(),
+                $this->customer->getVatPrice($item->getPrice())
+            )
+        );
+        $this->total->add($item->getTotalPrice());
     }
 
     public function getTotal() : float
@@ -79,12 +85,7 @@ class Cart
 
         /** @var Item $item */
         foreach ($this->items as $item) {
-            $this->total->add($this->priceWithTax($item));
+            $this->total->add($item->getTotalPrice());
         }
-    }
-
-    private function priceWithTax(ItemInterface $item) : float
-    {
-        return $item->getPrice() + $this->customer->getVatPrice($item->getPrice());
     }
 }

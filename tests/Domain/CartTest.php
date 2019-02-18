@@ -15,7 +15,7 @@ class CartTest extends TestCase
         // act
         $cart->addItem($item1 = new Item('okulary', 50.59));
         $cart->addItem($item2 = new Item('bluzka', 120.75));
-        $total = $item1->getPrice() + $item2->getPrice();
+        $total = $item1->getTotalPrice() + $item2->getTotalPrice();
         // assert
         self::assertInstanceOf(Order::class, $cart->createOrder());
         self::assertSame(
@@ -34,7 +34,7 @@ class CartTest extends TestCase
         // assert
         self::assertInstanceOf(Order::class, $cart->createOrder());
         self::assertSame(
-            $item1->getPrice() + $item2->getPrice(),
+            $item1->getTotalPrice() + $item2->getTotalPrice(),
             $cart->getTotal()
         );
     }
