@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Domain;
 
 use Domain\Customer\Address;
+use Domain\Customer\Tax\NP;
 use Domain\Customer\Tax\Vat;
 use Domain\Item\ItemInterface;
 use Domain\Item\ItemsCollection;
@@ -26,6 +27,23 @@ class Cart
                     'Polska'
                 ),
                 new Vat(),
+                'Jan Kowalski'
+            ),
+            new ItemsCollection()
+        );
+    }
+
+    public static function forUECitizen() : Cart
+    {
+        return new self(
+            new Customer(
+                new Address(
+                    'Any street',
+                    '342-01',
+                    'Xxx',
+                    'Yyy'
+                ),
+                new NP(),
                 'Jan Kowalski'
             ),
             new ItemsCollection()
