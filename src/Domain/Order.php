@@ -5,8 +5,14 @@ namespace Domain;
 
 use Domain\Item\ItemsCollection;
 
+/**
+ * Order powinnien mieć jednak więcej odpowiedzialności
+ * Za dużo logiki przeniosłasz do encji, zwiększając ich odpowiedzialność, jednocześnie pozbawiając tą klasę sensu bycia
+ */
 class Order
 {
+
+
     private $customer;
     private $items;
     private $total;

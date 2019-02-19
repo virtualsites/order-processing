@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Domain\Customer\Tax;
+namespace Domain\Customer;
 
-use Domain\Customer\Tax;
-
-class Vat implements Tax
+/**
+ * Lepszą nazwą byłoby "VAT"
+ * Podaktów jest wiele
+ */
+interface Vat
 {
-    public function countVat(float $price): float
-    {
-        return round($price * .23, 2);
-    }
+    public function calculate(float $price): float;
 }

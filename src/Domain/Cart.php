@@ -3,52 +3,23 @@ declare(strict_types=1);
 
 namespace Domain;
 
-use Domain\Customer\Address;
-use Domain\Customer\Tax\NP;
-use Domain\Customer\Tax\Vat;
 use Domain\Item\ItemInterface;
 use Domain\Item\ItemsCollection;
 
 class Cart
 {
+    /**
+     * @var Customer
+     */
     private $customer;
+
+    /**
+     * @var ItemsCollection
+     */
     private $items;
+
     /** @var Total */
     private $total;
-
-    public static function forPolishCustomer() : Cart
-    {
-        return new self(
-            new Customer(
-                new Address(
-                    'Al. Jana Pawła',
-                    '43-100',
-                    'Tychy',
-                    'Polska'
-                ),
-                new Vat(),
-                'Jan Kowalski'
-            ),
-            new ItemsCollection()
-        );
-    }
-
-    public static function forUECitizen() : Cart
-    {
-        return new self(
-            new Customer(
-                new Address(
-                    'Any street',
-                    '342-01',
-                    'Xxx',
-                    'Yyy'
-                ),
-                new NP(),
-                'Jan Kowalski'
-            ),
-            new ItemsCollection()
-        );
-    }
 
     public function __construct(Customer $customer, ItemsCollection $items)
     {
@@ -58,23 +29,37 @@ class Cart
     }
 
     /**
+     * @param ItemInterface $item
      * @throws \RuntimeException
+     *
+     * Koszyk powinien przyjmować produkt, ale informacja o ilości tego produktu, powinna być poza nim.
+     * Tzn. przekazywana jako dodatkowy atrybut do tej metody
      */
     public function addItem(ItemInterface $item) : void
     {
         if (false === $item->isAvailable()) {
+
+            /**
+             * Szkoda, że nie zrobiłaś osobnej klasy wyjątku dla tego typu błędów
+             */
             throw new \RuntimeException('Products are not available in store with provided quantity');
         }
 
+        /**
+         * Jedno wyrażenie, jedna linia
+         */
         $this->items->add(
-            $cartItem = $item->withVat($this->customer->getVatPrice($item->getPrice()))
+            $cartItem = $item->withVat(
+                $this->customer->getVatPrice($item->getPrice()))
         );
+
+
         $this->total->add($cartItem->getTotalPrice());
     }
 
     public function getTotal() : float
     {
-        return $this->total ->toFloat();
+        return $this->total->toFloat();
     }
 
     public function createOrder() : Order

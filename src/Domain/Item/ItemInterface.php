@@ -9,6 +9,10 @@ interface ItemInterface
 {
     public function getTotalPrice(): float;
     public function getPrice(): float;
+
+    /**
+     * Już opisałem w teście - pomieszanie odpowiedzialności
+     */
     public function isAvailable(): bool;
     public function withVat(float $getVatPrice) : Item;
 }

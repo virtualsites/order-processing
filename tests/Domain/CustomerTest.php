@@ -2,7 +2,7 @@
 namespace Domain;
 
 use Domain\Customer\Address;
-use Domain\Customer\Tax;
+use Domain\Customer\Vat;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -10,9 +10,13 @@ class CustomerTest extends TestCase
 {
     public function testGetVat()
     {
-        /** @var Tax|ObjectProphecy $tax */
-        $tax = $this->prophesize(Tax::class);
-        $tax->countVat($price = 44.30)->shouldBeCalled();
+        /** @var Vat|ObjectProphecy $tax */
+        /**
+         * Błędne użycie spy - w tym wypadku zupełnie nieuzasadnione
+         */
+        $tax = $this->prophesize(Vat::class);
+
+        $tax->calculate($price = 44.30)->shouldBeCalled();
         $customer = new Customer(
             new Address(
                 'street',
