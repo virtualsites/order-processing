@@ -31,16 +31,29 @@ class Cart
     /**
      * @param ItemInterface $item
      * @throws \RuntimeException
+     *
+     * Koszyk powinien przyjmować produkt, ale informacja o ilości tego produktu, powinna być poza nim.
+     * Tzn. przekazywana jako dodatkowy atrybut do tej metody
      */
     public function addItem(ItemInterface $item) : void
     {
         if (false === $item->isAvailable()) {
+
+            /**
+             * Szkoda, że nie zrobiłaś osobnej klasy wyjątku dla tego typu błędów
+             */
             throw new \RuntimeException('Products are not available in store with provided quantity');
         }
 
+        /**
+         * Jedno wyrażenie, jedna linia
+         */
         $this->items->add(
-            $cartItem = $item->withVat($this->customer->getVatPrice($item->getPrice()))
+            $cartItem = $item->withVat(
+                $this->customer->getVatPrice($item->getPrice()))
         );
+
+
         $this->total->add($cartItem->getTotalPrice());
     }
 

@@ -5,23 +5,29 @@ namespace Domain;
 
 use Domain\Customer\Address;
 use Domain\Customer\CustomerInterface;
-use Domain\Customer\Tax;
+use Domain\Customer\Vat;
 
+/**
+ * Ta klasa powinna być umieszczona raczej w obrębie swojej domeny, czyli katalogu Customer
+ */
 class Customer implements CustomerInterface
 {
     private $address;
-    private $tax;
     private $name;
 
-    public function __construct(Address $address, Tax $tax, string $name)
+    /** Bez vat - wyjaśnione w innym miejscu
+      Brakuje kraju.
+      Nie ma możliwości dynamicznej zmiany strategii
+
+     */
+    public function __construct(Address $address, string $name)
     {
         $this->address = $address;
-        $this->tax = $tax;
         $this->name = $name;
     }
 
-    public function getVatPrice(float $price): float
-    {
-        return $this->tax->countVat($price);
-    }
+    /**
+     * Customer nie powinien wiedzieć NIC o vat
+     * Nie jest to odpowiednie miejsce dla tej logiki
+     */
 }

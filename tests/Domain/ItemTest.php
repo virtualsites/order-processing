@@ -7,11 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase
 {
-    public function testGetTotalPriceShouldBeFloat(): void
-    {
-        $item = new Item('foo', 45, 1, 1);
-        self::assertIsFloat($item->getTotalPrice());
-    }
+    /** Zbędny test */
+
+
 
     public function testGetTotalPriceRoundedWithTwoPrecision(): void
     {
@@ -25,6 +23,10 @@ class ItemTest extends TestCase
         self::assertSame(123.0, $item->getTotalPrice());
     }
 
+    /**
+     * Brakuje testu "not available"
+     * Brakuje testów dla warunków brzegowych
+     */
     public function testIsAvailable(): void
     {
         $item = new Item('foo', 100, 1, 1);

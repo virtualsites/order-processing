@@ -9,6 +9,6 @@ class NPTest extends TestCase
     {
         $np = new NP();
         $price = 100;
-        self::assertEquals(0, $np->countVat($price));
+        self::assertEquals(0, $np->calculate($price));
     }
 }
