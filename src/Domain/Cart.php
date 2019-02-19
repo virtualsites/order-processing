@@ -3,52 +3,23 @@ declare(strict_types=1);
 
 namespace Domain;
 
-use Domain\Customer\Address;
-use Domain\Customer\Tax\NP;
-use Domain\Customer\Tax\Vat;
 use Domain\Item\ItemInterface;
 use Domain\Item\ItemsCollection;
 
 class Cart
 {
+    /**
+     * @var Customer
+     */
     private $customer;
+
+    /**
+     * @var ItemsCollection
+     */
     private $items;
+
     /** @var Total */
     private $total;
-
-    public static function forPolishCustomer() : Cart
-    {
-        return new self(
-            new Customer(
-                new Address(
-                    'Al. Jana Pawła',
-                    '43-100',
-                    'Tychy',
-                    'Polska'
-                ),
-                new Vat(),
-                'Jan Kowalski'
-            ),
-            new ItemsCollection()
-        );
-    }
-
-    public static function forUECitizen() : Cart
-    {
-        return new self(
-            new Customer(
-                new Address(
-                    'Any street',
-                    '342-01',
-                    'Xxx',
-                    'Yyy'
-                ),
-                new NP(),
-                'Jan Kowalski'
-            ),
-            new ItemsCollection()
-        );
-    }
 
     public function __construct(Customer $customer, ItemsCollection $items)
     {
@@ -58,6 +29,7 @@ class Cart
     }
 
     /**
+     * @param ItemInterface $item
      * @throws \RuntimeException
      */
     public function addItem(ItemInterface $item) : void
@@ -74,7 +46,7 @@ class Cart
 
     public function getTotal() : float
     {
-        return $this->total ->toFloat();
+        return $this->total->toFloat();
     }
 
     public function createOrder() : Order
